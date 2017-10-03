@@ -3,7 +3,7 @@ package com.gmail.kevindang97.tvseriesrenamer;
 /**
  * Creates formatted strings intended for use as the file names of shows in a series  
  */
-public class SeriesFormattedString {
+public class SeriesFormatter {
 	
 	private static final String DEFAULT_FORMAT = "%t - %s%e[ - %n]";
 	private static final int DEFAULT_PADDING = 2;
@@ -16,15 +16,15 @@ public class SeriesFormattedString {
 	private int seasonNumberPadding;
 	private int episodeNumberPadding;
 	
-	public SeriesFormattedString() {
+	public SeriesFormatter() {
 		this(DEFAULT_FORMAT, DEFAULT_PADDING, DEFAULT_PADDING);
 	}
 	
-	public SeriesFormattedString(String format) {
+	public SeriesFormatter(String format) {
 		this(format, DEFAULT_PADDING, DEFAULT_PADDING);
 	}
 	
-	public SeriesFormattedString(String format, int seasonPadding, int episodePadding) {
+	public SeriesFormatter(String format, int seasonPadding, int episodePadding) {
 		this.originalFormat = "";
 		this.intermediateFormat = "";
 		this.optionalEpisodeNameFormat = "";
