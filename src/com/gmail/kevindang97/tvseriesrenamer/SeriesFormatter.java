@@ -1,7 +1,7 @@
 package com.gmail.kevindang97.tvseriesrenamer;
 
 /**
- * Creates formatted strings intended for use as the file names of shows in a series  
+ * Creates formatted strings intended for use as the filenames of shows in a series  
  */
 public class SeriesFormatter {
 	
@@ -24,14 +24,14 @@ public class SeriesFormatter {
 		this(format, DEFAULT_PADDING, DEFAULT_PADDING);
 	}
 	
-	public SeriesFormatter(String format, int seasonPadding, int episodePadding) {
+	public SeriesFormatter(String format, int seasonNumberPadding, int episodeNumberPadding) {
 		this.originalFormat = "";
 		this.intermediateFormat = "";
 		this.optionalEpisodeNameFormat = "";
 		this.seriesTitle = "";
 		this.seasonNumber = 0;
-		this.seasonNumberPadding = seasonPadding;
-		this.episodeNumberPadding = episodePadding;
+		this.seasonNumberPadding = seasonNumberPadding;
+		this.episodeNumberPadding = episodeNumberPadding;
 		setFormat(format);
 	}
 	
