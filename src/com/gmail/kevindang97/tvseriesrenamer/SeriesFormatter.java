@@ -5,7 +5,7 @@ package com.gmail.kevindang97.tvseriesrenamer;
  */
 public class SeriesFormatter {
 	
-	private static final String DEFAULT_FORMAT = "%t - %s%e[ - %n]";
+	private static final String DEFAULT_FORMAT = "%t - s%se%e[ - %n]";
 	private static final int DEFAULT_PADDING = 2;
 	
 	private String originalFormat;
@@ -67,14 +67,16 @@ public class SeriesFormatter {
 	
 	/**
 	 * Generates and sets a new intermediateFormat, which is used to save processing steps
-	 * 	because in normal operation a bulk number of getFormattedString() calls will be made 
+	 * 	because in normal operation a bulk number of getFormattedString() calls will be made
+	 * Will be set to an empty string if seriesTitle is also an empty string,
+	 * 	as seriesTitle is a required attribute 
 	 */
 	private void generateIntermediateFormat() {
-		if (seriesTitle != null) {
+		if (seriesTitle != "") {
 			intermediateFormat = originalFormat.replace("%t", seriesTitle);
 			if (seasonNumber != 0) {
 				intermediateFormat = intermediateFormat.replace("%s",
-						String.format("0" + seasonNumberPadding + "d", seasonNumber));
+						String.format("%0" + seasonNumberPadding + "d", seasonNumber));
 			}
 		} else {
 			intermediateFormat = "";
@@ -100,7 +102,7 @@ public class SeriesFormatter {
 	}
 	
 	/**
-	 * Set length of the 0 padding for the season number
+	 * Set width of the padding used for the season number
 	 * @param seasonNumberPadding
 	 */
 	public void setSeasonPadding(int seasonNumberPadding) {
@@ -109,7 +111,7 @@ public class SeriesFormatter {
 	}
 	
 	/**
-	 * Set length of the 0 padding for the episode number
+	 * Set width of the padding used for the episode number
 	 * @param episodeNumberPadding
 	 */
 	public void setEpisodePadding(int episodeNumberPadding) {
@@ -121,7 +123,7 @@ public class SeriesFormatter {
 	 * @return
 	 */
 	public String getOriginalFormat() {
-		return originalFormat.replace("[]", optionalEpisodeNameFormat);
+		return originalFormat.replace("[]", "[" + optionalEpisodeNameFormat + "]");
 	}
 	
 	/**
@@ -131,18 +133,25 @@ public class SeriesFormatter {
 	 * @return
 	 */
 	public String getFormattedString(int episodeNumber) {
-		return intermediateFormat.replace("%e",
-				String.format("0" + episodeNumberPadding + "d", episodeNumber));
+		String formatted = intermediateFormat.replace("%e",
+				String.format("%0" + episodeNumberPadding + "d", episodeNumber));
+		formatted = formatted.replace("[]", "");
+		return formatted;
 	}
 	
 	/**
 	 * Main function, returns a formatted string built using the format, series title,
 	 * 	season number, given episode number and given episode name
 	 * @param episodeNumber
+	 * @param episodeName
 	 * @return
 	 */
 	public String getFormattedString(int episodeNumber, String episodeName) {
-		return getFormattedString(episodeNumber).replace("[]",
+		String formatted = intermediateFormat.replace("%e",
+				String.format("%0" + episodeNumberPadding + "d", episodeNumber));
+		formatted = formatted.replace("[]",
 				optionalEpisodeNameFormat.replace("%n", episodeName));
+		return formatted;
 	}
+	
 }
