@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.gmail.kevindang97.tvseriesrenamer.SeriesFormatter;
 
-public class SeriesFormattedStringTest {
+public class SeriesFormatterTest {
 
 	@Test
 	public void getOriginalFormatTest() {
