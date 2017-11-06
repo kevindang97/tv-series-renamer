@@ -1,4 +1,4 @@
-package com.gmail.kevindang97.tvseriesrenamer;
+package com.gmail.kevindang97.tvseriesrenamer.src;
 
 import java.io.IOException;
 import java.nio.file.Files;

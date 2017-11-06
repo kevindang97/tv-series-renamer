@@ -2,7 +2,7 @@ package com.gmail.kevindang97.tvseriesrenamer.test;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
-import com.gmail.kevindang97.tvseriesrenamer.SeriesFormatter;
+import com.gmail.kevindang97.tvseriesrenamer.src.SeriesFormatter;
 
 public class SeriesFormatterTest {
 

@@ -1,4 +1,4 @@
-package com.gmail.kevindang97.tvseriesrenamer;
+package com.gmail.kevindang97.tvseriesrenamer.src;
 
 /**
  * Creates formatted strings intended for use as the filenames of shows in a series
@@ -66,7 +66,7 @@ public class SeriesFormatter {
 
   /**
    * Generates and sets a new intermediateFormat, which is used to save processing steps because in
-   * normal operation a bulk number of getFormattedString() calls will be made Will be set to an
+   * normal operation a bulk number of getFormattedString() calls will be made. Will be set to an
    * empty string if seriesTitle is also an empty string, as seriesTitle is a required attribute
    */
   private void generateIntermediateFormat() {
