@@ -42,7 +42,8 @@ public class FileRenamer {
   }
 
   /**
-   * Returns the String of the filename that the source file will be renamed to
+   * Returns the String of the filename that the source file will be renamed to. Does not include
+   * file extension as the extension will remain unchanged by any of this class' renaming actions
    * 
    * @return
    */
@@ -51,7 +52,8 @@ public class FileRenamer {
   }
 
   /**
-   * Set a new end filename that the file will be renamed to
+   * Set a new end filename that the file will be renamed to. Does not include file extension as the
+   * extension will remain unchanged by any of this class' renaming actions
    * 
    * @param endFilename
    */
@@ -60,7 +62,8 @@ public class FileRenamer {
   }
 
   /**
-   * Returns the String of the file's original filename
+   * Returns the String of the file's original filename. Does not include file extension as the
+   * extension will remain unchanged by any of this class' renaming actions
    * 
    * @return
    */
