@@ -60,6 +60,16 @@ public class FileRenamer {
   }
 
   /**
+   * Returns the String of the file's original filename
+   * 
+   * @return
+   */
+  public String getOriginalFilename() {
+    // TODO
+    return null;
+  }
+
+  /**
    * Swaps the source files of two FileRenamer objects with each other
    * 
    * @param other
@@ -91,6 +101,13 @@ public class FileRenamer {
       System.out.println("IOException occurred in FileRenamer object's rename() method");
       e.printStackTrace();
     }
+  }
+
+  /**
+   * Reverts any renaming action, so it sets file back to its original filename
+   */
+  public void revert() {
+
   }
 
 }
