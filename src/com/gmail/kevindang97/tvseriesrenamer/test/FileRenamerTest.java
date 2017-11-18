@@ -43,11 +43,6 @@ public class FileRenamerTest {
     assertTrue(Files.deleteIfExists(secondTestFile));
   }
 
-  @Test
-  public void testFilename() {
-
-  }
-
   /**
    * Tests some of the standard methods along with getter and setter methods
    */
