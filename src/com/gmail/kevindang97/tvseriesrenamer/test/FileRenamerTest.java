@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,19 +25,11 @@ public class FileRenamerTest {
    */
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
-    System.out.println("Setting up tests...");
-    System.out.println("Using working directory: " + WORKING_DIRECTORY.toAbsolutePath().toString());
-
-    firstTestFile =
-        Files.createTempFile(WORKING_DIRECTORY, "FileRenamerTest", null, (FileAttribute[]) null);
+    firstTestFile = Files.createTempFile("FileRenamerTest", null);
     firstOriginalFilename = firstTestFile.getFileName().toString();
 
-    secondTestFile =
-        Files.createTempFile(WORKING_DIRECTORY, "FileRenamerTest", null, (FileAttribute[]) null);
+    secondTestFile = Files.createTempFile("FileRenamerTest_", null);
     secondOriginalFilename = secondTestFile.getFileName().toString();
-
-
-    System.out.println("Finished setting up");
   }
 
   /**
@@ -48,10 +39,8 @@ public class FileRenamerTest {
    */
   @AfterClass
   public static void tearDownAfterClass() throws Exception {
-    System.out.println("Tearing down...");
     assertTrue(Files.deleteIfExists(firstTestFile));
     assertTrue(Files.deleteIfExists(secondTestFile));
-    System.out.println("Finished tearing down");
   }
 
   @Test
