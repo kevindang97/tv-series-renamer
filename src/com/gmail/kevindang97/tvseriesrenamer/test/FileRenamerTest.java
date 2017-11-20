@@ -1,46 +1,58 @@
 package com.gmail.kevindang97.tvseriesrenamer.test;
 
 import static org.junit.Assert.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import com.gmail.kevindang97.tvseriesrenamer.src.FileRenamer;
 
 public class FileRenamerTest {
 
-  private static final Path WORKING_DIRECTORY = Paths.get("");
-
-  private static Path firstTestFile;
-  private static Path secondTestFile;
-  private static String firstOriginalFilename;
-  private static String secondOriginalFilename;
+  private Path firstTestFile;
+  private Path secondTestFile;
+  private String firstOriginalFilename;
+  private String secondOriginalFilename;
 
   /**
-   * Creates test file used in these tests
+   * Creates test file used in each test
    * 
    * @throws Exception
    */
-  @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
-    firstTestFile = Files.createTempFile("FileRenamerTest", null);
+  @Before
+  public void setUp() throws Exception {
+    System.out.println("Setting up...");
+
+    System.out.println("Creating temporary test files...");
+    firstTestFile = Files.createTempFile("FileRenamerTest_", "");
     firstOriginalFilename = firstTestFile.getFileName().toString();
 
-    secondTestFile = Files.createTempFile("FileRenamerTest_", null);
+    secondTestFile = Files.createTempFile("FileRenamerTest_", "");
     secondOriginalFilename = secondTestFile.getFileName().toString();
+
+    System.out.println("Finished setting up");
   }
 
   /**
-   * Deletes the test file
+   * Deletes the test files after each test
    * 
    * @throws Exception
    */
-  @AfterClass
-  public static void tearDownAfterClass() throws Exception {
-    assertTrue(Files.deleteIfExists(firstTestFile));
-    assertTrue(Files.deleteIfExists(secondTestFile));
+  @After
+  public void tearDown() throws Exception {
+    System.out.println("Tearing down...");
+
+    if (!Files.deleteIfExists(firstTestFile)) {
+      System.out.println("ERROR: Could not delete first test file");
+    }
+
+    if (!Files.deleteIfExists(secondTestFile)) {
+      System.out.println("ERROR: Could not delete second test file");
+    }
+
+    System.out.println("Finished tearing down");
   }
 
   /**
@@ -111,9 +123,11 @@ public class FileRenamerTest {
 
   /**
    * Tests rename and revert methods
+   * 
+   * @throws IOException
    */
   @Test
-  public void testRenameAndRevert() {
+  public void testRenameAndRevert() throws IOException {
     FileRenamer fr = new FileRenamer(firstTestFile, "firstFilename");
 
     assertEquals(firstTestFile, fr.getSourceFile());
@@ -124,7 +138,7 @@ public class FileRenamerTest {
 
     fr.rename();
 
-    assertEquals("firstFilename", fr.getSourceFile().getFileName().toFile());
+    assertEquals("firstFilename", fr.getSourceFile().getFileName().toString());
 
     fr.revert();
 

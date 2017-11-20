@@ -1,8 +1,10 @@
 package com.gmail.kevindang97.tvseriesrenamer.src;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 /**
  * Abstract data structure used to keep all the data associated with a single renaming action in one
@@ -12,6 +14,7 @@ public class FileRenamer {
 
   private Path sourceFile;
   private String endFilename;
+  private String originalFileName;
 
   /**
    * Creates a new FileRenamer object and sets both parameters
@@ -20,7 +23,9 @@ public class FileRenamer {
    * @param endFilename
    */
   public FileRenamer(Path sourceFile, String endFilename) {
-
+    this.sourceFile = sourceFile;
+    this.endFilename = endFilename;
+    this.originalFileName = sourceFile.getFileName().toString();
   }
 
   /**
@@ -39,6 +44,7 @@ public class FileRenamer {
    */
   public void setSourceFile(Path sourceFile) {
     this.sourceFile = sourceFile;
+    this.originalFileName = sourceFile.getFileName().toString();
   }
 
   /**
@@ -68,8 +74,7 @@ public class FileRenamer {
    * @return
    */
   public String getOriginalFilename() {
-    // TODO
-    return null;
+    return originalFileName;
   }
 
   /**
@@ -95,22 +100,24 @@ public class FileRenamer {
   }
 
   /**
-   * Does the renaming action, setting the new filename of the source file to endFilename
+   * Does the renaming action, setting the new filename of the source file to endFilename. If it
+   * encounters a file that already exists it will throw an error rather than overwrite it.
+   * 
+   * @throws IOException
    */
-  public void rename() {
-    try {
-      Files.move(sourceFile, sourceFile.resolve(endFilename));
-    } catch (IOException e) {
-      System.out.println("IOException occurred in FileRenamer object's rename() method");
-      e.printStackTrace();
-    }
+  public void rename() throws IOException, FileAlreadyExistsException {
+    sourceFile = Files.move(sourceFile, sourceFile.resolveSibling(endFilename));
   }
 
   /**
-   * Reverts any renaming action, so it sets file back to its original filename
+   * Reverts any renaming action, so it sets file back to its original filename. Will overwrite
+   * files that already exist because they shouldn't exist in the first place.
+   * 
+   * @throws IOException
    */
-  public void revert() {
-
+  public void revert() throws IOException {
+    sourceFile = Files.move(sourceFile, sourceFile.resolveSibling(originalFileName),
+        StandardCopyOption.REPLACE_EXISTING);
   }
 
 }
