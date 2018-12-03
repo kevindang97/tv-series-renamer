@@ -1,4 +1,4 @@
-package kevindang97;
+package kevindang97.tvSeriesRenamer;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

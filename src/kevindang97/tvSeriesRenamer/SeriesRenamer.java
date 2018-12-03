@@ -1,4 +1,4 @@
-package kevindang97;
+package kevindang97.tvSeriesRenamer;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
