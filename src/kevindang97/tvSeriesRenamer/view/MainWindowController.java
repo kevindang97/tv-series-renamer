@@ -1,4 +1,4 @@
-package kevindang97.tvSeriesRenamer;
+package kevindang97.tvSeriesRenamer.view;
 
 import java.io.File;
 import java.util.regex.Pattern;
@@ -8,6 +8,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.stage.DirectoryChooser;
+import kevindang97.tvSeriesRenamer.MainApp;
+import kevindang97.tvSeriesRenamer.model.RenameAction;
 
 public class MainWindowController {
 

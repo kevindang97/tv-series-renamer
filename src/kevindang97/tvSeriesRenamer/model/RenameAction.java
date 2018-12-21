@@ -1,4 +1,4 @@
-package kevindang97.tvSeriesRenamer;
+package kevindang97.tvSeriesRenamer.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

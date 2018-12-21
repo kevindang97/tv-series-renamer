@@ -2,6 +2,8 @@ package kevindang97.tvSeriesRenamer;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import kevindang97.tvSeriesRenamer.model.RenameAction;
+import kevindang97.tvSeriesRenamer.model.SeriesRenamer;
 
 public class Driver {
 

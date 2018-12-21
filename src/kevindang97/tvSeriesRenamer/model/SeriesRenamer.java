@@ -1,4 +1,4 @@
-package kevindang97.tvSeriesRenamer;
+package kevindang97.tvSeriesRenamer.model;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -36,39 +36,6 @@ public class SeriesRenamer {
   public String getFormatString() {
     return format;
   }
-
-  // public String getCurrentFilename(int index) {
-  // if (indexInBounds(index)) {
-  // return files.get(index).getFileName().toString();
-  // } else {
-  // System.err.println("ERROR: getCurrentFilename(), index " + index + " out of bounds");
-  // return "";
-  // }
-  // }
-
-  // public String getTargetFilename(int index) {
-  // // TODO implement support for different formats
-  // // get extension from original filename
-  // String extension = "";
-  // String[] split = getCurrentFilename(index).split("\\.");
-  // if (split.length > 1) {
-  // // if the file extension actually exists
-  // extension = "." + split[split.length - 1];
-  // }
-  //
-  // if (indexInBounds(index)) {
-  // if (getEpisodeName(index).equals("")) {
-  // return String.format("%s - s%02de%0" + episodeNumDigits + "d%s", seriesName, seasonNumber,
-  // index + 1, extension);
-  // } else {
-  // return String.format("%s - s%02de%0" + episodeNumDigits + "d - %s%s", seriesName,
-  // seasonNumber, index + 1, getEpisodeName(index), extension);
-  // }
-  // } else {
-  // System.err.println("ERROR: getTargetFilename(), index " + index + " out of bounds");
-  // return "";
-  // }
-  // }
 
   public ObservableList<RenameAction> getRenameActions() {
     return renameActions;
@@ -113,15 +80,6 @@ public class SeriesRenamer {
   public int getSeasonNumber() {
     return seasonNumber;
   }
-
-  // public String getEpisodeName(int index) {
-  // if (indexInBounds(index)) {
-  // return episodeName.get(index);
-  // } else {
-  // System.err.println("ERROR: getEpisodeName(), index " + index + " out of bounds");
-  // return "";
-  // }
-  // }
 
   public void setSeriesName(String seriesName) {
     this.seriesName = seriesName;
