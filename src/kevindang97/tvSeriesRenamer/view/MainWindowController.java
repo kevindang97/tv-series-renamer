@@ -1,14 +1,18 @@
 package kevindang97.tvSeriesRenamer.view;
 
 import java.io.File;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 import kevindang97.tvSeriesRenamer.MainApp;
 import kevindang97.tvSeriesRenamer.model.RenameAction;
@@ -34,8 +38,27 @@ public class MainWindowController {
   private void initialize() {
     beforeFilenameColumn
         .setCellValueFactory(cellData -> cellData.getValue().beforeFilenameProperty());
+
+    afterFilenameColumn.setCellFactory(tableCell -> {
+      TableCell<RenameAction, String> cell = new TableCell<RenameAction, String>() {
+        @Override
+        protected void updateItem(String item, boolean empty) {
+          super.updateItem(item, empty);
+          setText(empty ? null : item);
+        }
+      };
+
+      cell.setOnMouseClicked(event -> {
+        handleTableMouseClicked(event);
+      });
+
+      return cell;
+    });
+
     afterFilenameColumn
         .setCellValueFactory(cellData -> cellData.getValue().afterFilenameProperty());
+
+
 
     // set up change listener for series name and season number text fields
     seriesNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -93,5 +116,21 @@ public class MainWindowController {
 
     // perform the rename operation
     mainApp.getSeriesRenamer().performRename();
+  }
+
+  private void handleTableMouseClicked(MouseEvent event) {
+    if (event.getClickCount() == 2) {
+      TextInputDialog dialog = new TextInputDialog(
+          fileTable.getSelectionModel().getSelectedItem().episodeNameProperty().get());
+      dialog.setTitle("Edit episode name");
+      dialog.setHeaderText(
+          "Edit episode " + (fileTable.getSelectionModel().getSelectedIndex() + 1) + "'s name:");
+
+      Optional<String> result = dialog.showAndWait();
+      if (result.isPresent()) {
+        mainApp.getSeriesRenamer().setEpisodeName(fileTable.getSelectionModel().getSelectedIndex(),
+            result.get());
+      }
+    }
   }
 }
