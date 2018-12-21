@@ -26,7 +26,7 @@ public class MainApp extends Application {
     try {
       // Initialise the MainWindow layout
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(MainApp.class.getResource("MainWindow.fxml"));
+      loader.setLocation(MainApp.class.getResource("view/MainWindow.fxml"));
       rootLayout = (BorderPane) loader.load();
 
       MainWindowController controller = loader.getController();

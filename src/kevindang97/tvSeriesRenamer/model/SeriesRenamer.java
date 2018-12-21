@@ -188,7 +188,34 @@ public class SeriesRenamer {
     }
   }
 
-  public boolean performRename() {
+  /**
+   * Checks that the various fields have valid values, returning an error message for each invalid
+   * field. An empty return string means there are no invalid fields.
+   * 
+   * @return
+   */
+  public String performValidation() {
+    String errorMessage = "";
+
+    if (getNumFiles() == 0) {
+      errorMessage += "Please open a folder with at least one file to rename\n";
+    }
+    if (seriesName.equals("")) {
+      errorMessage += "Series title field must not be empty\n";
+    }
+    if (seasonNumber <= 0) {
+      errorMessage += "Season number must be a positive integer\n";
+    }
+
+    return errorMessage;
+  }
+
+  /**
+   * Performs the full renaming operation on all the files in the renameActions list
+   * 
+   * @return
+   */
+  public void performRename() {
     // TODO Can't handle case where original and target filenames overlap
     for (int i = 0; i < getNumFiles(); i++) {
       try {
@@ -201,7 +228,8 @@ public class SeriesRenamer {
         e.printStackTrace();
       }
     }
-    return false;
+
+    openFolder(folder);
   }
 
   private int getNumDigits(int num) {

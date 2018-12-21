@@ -3,6 +3,8 @@ package kevindang97.tvSeriesRenamer.view;
 import java.io.File;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -71,5 +73,25 @@ public class MainWindowController {
     if (directory != null) {
       mainApp.getSeriesRenamer().openFolder(directory.toPath());
     }
+  }
+
+  @FXML
+  private void handlePerformRename() {
+    // validation handling
+    String errorMessage = mainApp.getSeriesRenamer().performValidation();
+
+    if (!errorMessage.equals("")) {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.initOwner(mainApp.getPrimaryStage());
+      alert.setTitle("Invalid fields");
+      alert.setHeaderText("Please correct invalid fields:");
+      alert.setContentText(errorMessage);
+
+      alert.showAndWait();
+      return;
+    }
+
+    // perform the rename operation
+    mainApp.getSeriesRenamer().performRename();
   }
 }

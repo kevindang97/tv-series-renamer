@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kevindang97.tvSeriesRenamer.MainWindowController">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kevindang97.tvSeriesRenamer.view.MainWindowController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <top>
@@ -54,7 +54,7 @@
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <buttons>
                       <Button mnemonicParsing="false" text="Input Episode Names" />
-                        <Button mnemonicParsing="false" text="Perform Rename" />
+                        <Button mnemonicParsing="false" onAction="#handlePerformRename" text="Perform Rename" />
                     </buttons>
                   </ButtonBar>
                </children>
