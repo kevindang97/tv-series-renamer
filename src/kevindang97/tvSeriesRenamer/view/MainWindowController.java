@@ -1,9 +1,13 @@
 package kevindang97.tvSeriesRenamer.view;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableCell;
@@ -17,7 +21,10 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import kevindang97.tvSeriesRenamer.MainApp;
 import kevindang97.tvSeriesRenamer.model.RenameAction;
 
@@ -158,6 +165,38 @@ public class MainWindowController {
   }
 
   @FXML
+  private void handleInputEpisodeNames() {
+    try {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(MainWindowController.class.getResource("EpisodeNameInput.fxml"));
+      AnchorPane page = (AnchorPane) loader.load();
+
+      Stage dialogStage = new Stage();
+      dialogStage.setTitle("Enter episode names");
+      dialogStage.initModality(Modality.WINDOW_MODAL);
+      dialogStage.initOwner(mainApp.getPrimaryStage());
+      Scene scene = new Scene(page);
+      dialogStage.setScene(scene);
+
+      EpisodeNameInputController controller = loader.getController();
+      controller.setDialogStage(dialogStage);
+
+      dialogStage.showAndWait();
+
+      if (controller.isOkClicked()) {
+        List<String> episodeNames = controller.getEpisodeNames();
+
+        for (int i = 0; i < Math.min(mainApp.getSeriesRenamer().getNumFiles(),
+            episodeNames.size()); i++) {
+          mainApp.getSeriesRenamer().setEpisodeName(i, episodeNames.get(i));
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
   private void handlePerformRename() {
     // validation handling
     String errorMessage = mainApp.getSeriesRenamer().performValidation();
@@ -177,6 +216,12 @@ public class MainWindowController {
     mainApp.getSeriesRenamer().performRename();
   }
 
+  /**
+   * Handles event for double clicking cells in the afterFilename column. This is for the purpose of
+   * individually setting episode names for files.
+   * 
+   * @param event
+   */
   private void handleTableMouseClicked(MouseEvent event) {
     if (event.getClickCount() == 2) {
       TextInputDialog dialog = new TextInputDialog(
