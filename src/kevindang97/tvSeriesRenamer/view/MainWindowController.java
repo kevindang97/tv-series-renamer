@@ -12,7 +12,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.stage.DirectoryChooser;
 import kevindang97.tvSeriesRenamer.MainApp;
 import kevindang97.tvSeriesRenamer.model.RenameAction;
@@ -38,7 +42,67 @@ public class MainWindowController {
   private void initialize() {
     beforeFilenameColumn
         .setCellValueFactory(cellData -> cellData.getValue().beforeFilenameProperty());
+    afterFilenameColumn
+        .setCellValueFactory(cellData -> cellData.getValue().afterFilenameProperty());
 
+    // Add event handler only to the cells in the beforeFilename column
+    beforeFilenameColumn.setCellFactory(tableCell -> {
+      TableCell<RenameAction, String> cell = new TableCell<RenameAction, String>() {
+        @Override
+        protected void updateItem(String item, boolean empty) {
+          super.updateItem(item, empty);
+          setText(empty ? null : item);
+        }
+      };
+
+      cell.setOnDragDetected(event -> {
+        Dragboard dragboard = cell.startDragAndDrop(TransferMode.MOVE);
+        ClipboardContent content = new ClipboardContent();
+        content.putString(Integer.toString(cell.getTableRow().getIndex()));
+        dragboard.setContent(content);
+
+        event.consume();
+      });
+
+      cell.setOnDragOver(event -> {
+        if (event.getGestureSource() != cell && event.getDragboard().hasString()) {
+          event.acceptTransferModes(TransferMode.MOVE);
+
+          event.consume();
+        }
+      });
+
+      cell.setOnDragEntered(event -> {
+        if (event.getGestureSource() != cell && event.getDragboard().hasString()) {
+          cell.setOpacity(0.5);
+        }
+
+        event.consume();
+      });
+
+      cell.setOnDragExited(event -> {
+        cell.setOpacity(1);
+
+        event.consume();
+      });
+
+      cell.setOnDragDropped(event -> {
+        // swap the two before filenames
+        int index1 = Integer.parseInt(event.getDragboard().getString());
+        int index2 = cell.getTableRow().getIndex();
+        // System.out.println("Moving cells from rows " + index1 + " & " + index2);
+
+        mainApp.getSeriesRenamer().moveBeforeFilenameSwap(index1, index2);
+
+        event.consume();
+      });
+
+      cell.setOnDragDone(DragEvent::consume);
+
+      return cell;
+    });
+
+    // Add event handler only to the cells in the afterFilename column
     afterFilenameColumn.setCellFactory(tableCell -> {
       TableCell<RenameAction, String> cell = new TableCell<RenameAction, String>() {
         @Override
@@ -54,11 +118,6 @@ public class MainWindowController {
 
       return cell;
     });
-
-    afterFilenameColumn
-        .setCellValueFactory(cellData -> cellData.getValue().afterFilenameProperty());
-
-
 
     // set up change listener for series name and season number text fields
     seriesNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
