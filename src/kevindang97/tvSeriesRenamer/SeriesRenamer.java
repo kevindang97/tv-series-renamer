@@ -100,6 +100,12 @@ public class SeriesRenamer {
     return true;
   }
 
+  private void regenerateAllAfterFilenames() {
+    for (int i = 0; i < getNumFiles(); i++) {
+      regenerateAfterFilename(i);
+    }
+  }
+
   public String getSeriesName() {
     return seriesName;
   }
@@ -119,10 +125,12 @@ public class SeriesRenamer {
 
   public void setSeriesName(String seriesName) {
     this.seriesName = seriesName;
+    regenerateAllAfterFilenames();
   }
 
   public void setSeasonNumber(int seasonNum) {
     this.seasonNumber = seasonNum;
+    regenerateAllAfterFilenames();
   }
 
   public void setEpisodeName(int index, String newEpisodeName) {
@@ -167,9 +175,7 @@ public class SeriesRenamer {
       episodeNumDigits = 2;
     }
 
-    for (int i = 0; i < getNumFiles(); i++) {
-      regenerateAfterFilename(i);
-    }
+    regenerateAllAfterFilenames();
 
     return true;
   }

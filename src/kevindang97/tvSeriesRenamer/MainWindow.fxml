@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kevindang97.tvSeriesRenamer.MainWindowController">
    <top>
       <BorderPane BorderPane.alignment="CENTER">
          <top>
@@ -23,7 +23,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Open Folder" />
+                    <MenuItem mnemonicParsing="false" onAction="#handleOpenFolder" text="Open Folder" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -48,9 +48,9 @@
               </rowConstraints>
                <children>
                   <Label text="Series Title" />
-                  <TextField GridPane.columnIndex="1" GridPane.columnSpan="3" />
+                  <TextField fx:id="seriesNameTextField" GridPane.columnIndex="1" GridPane.columnSpan="3" />
                   <Label text="Season Number" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="seasonNumberTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <buttons>
                       <Button mnemonicParsing="false" text="Input Episode Names" />
@@ -66,10 +66,10 @@
       </BorderPane>
    </top>
    <center>
-      <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="fileTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="75.0" sortable="false" text="Before" />
-          <TableColumn prefWidth="75.0" sortable="false" text="After" />
+          <TableColumn fx:id="beforeFilenameColumn" prefWidth="75.0" sortable="false" text="Before" />
+          <TableColumn fx:id="afterFilenameColumn" prefWidth="75.0" sortable="false" text="After" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
