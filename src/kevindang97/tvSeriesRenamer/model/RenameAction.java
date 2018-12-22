@@ -3,7 +3,7 @@ package kevindang97.tvSeriesRenamer.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class RenameAction {
+public class RenameAction implements Comparable<RenameAction> {
 
   private final StringProperty beforeFilename;
   private final StringProperty afterFilename;
@@ -49,5 +49,10 @@ public class RenameAction {
 
   public StringProperty episodeNameProperty() {
     return episodeName;
+  }
+
+  @Override
+  public int compareTo(RenameAction other) {
+    return beforeFilename.get().compareTo(other.beforeFilename.get());
   }
 }
