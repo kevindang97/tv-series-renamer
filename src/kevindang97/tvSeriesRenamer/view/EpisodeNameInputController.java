@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import kevindang97.tvSeriesRenamer.util.Util;
 
 public class EpisodeNameInputController {
 
@@ -13,6 +14,13 @@ public class EpisodeNameInputController {
 
   private boolean okClicked = false;
   private Stage dialogStage;
+
+  @FXML
+  private void initialize() {
+    // set up text formatter for textArea to prevent the input of special characters that can't be
+    // placed in filenames
+    textArea.setTextFormatter(Util.getRestricterIllegalFilenameChars());
+  }
 
   public List<String> getEpisodeNames() {
     String[] array = textArea.getText().split("\n");

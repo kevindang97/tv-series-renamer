@@ -29,6 +29,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kevindang97.tvSeriesRenamer.MainApp;
 import kevindang97.tvSeriesRenamer.model.RenameAction;
+import kevindang97.tvSeriesRenamer.util.Util;
 
 public class MainWindowController {
 
@@ -140,6 +141,9 @@ public class MainWindowController {
       }
       mainApp.getSeriesRenamer().setSeasonNumber(seasonNum);
     });
+
+    // restrict series name text field to not allow illegal filename chars
+    seriesNameTextField.setTextFormatter(Util.getRestricterIllegalFilenameChars());
 
     // set up text formatter for season number text field to restrict input to only digit characters
     seasonNumberTextField.setTextFormatter(new TextFormatter<>(change -> {
@@ -261,6 +265,9 @@ public class MainWindowController {
       dialog.setTitle("Edit episode name");
       dialog.setHeaderText(
           "Edit episode " + (fileTable.getSelectionModel().getSelectedIndex() + 1) + "'s name:");
+
+      // restrict text input field so illegal filename chars can't be inputted
+      dialog.getEditor().setTextFormatter(Util.getRestricterIllegalFilenameChars());
 
       Optional<String> result = dialog.showAndWait();
       if (result.isPresent()) {
