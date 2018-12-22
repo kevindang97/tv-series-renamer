@@ -1,4 +1,4 @@
-package kevindang97.tvSeriesRenamer.controller;
+package kevindang97.tvSeriesRenamer.view;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -172,10 +173,34 @@ public class MainWindowController {
   }
 
   @FXML
+  private void handleSettings() {
+    try {
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(MainWindowController.class.getResource("SettingsWindow.fxml"));
+      BorderPane page = (BorderPane) loader.load();
+
+      Stage dialogStage = new Stage();
+      dialogStage.setTitle("Settings");
+      dialogStage.initModality(Modality.WINDOW_MODAL);
+      dialogStage.initOwner(mainApp.getPrimaryStage());
+      Scene scene = new Scene(page);
+      dialogStage.setScene(scene);
+
+      SettingsWindowController controller = loader.getController();
+      controller.setSeriesRenamer(mainApp.getSeriesRenamer());
+      controller.setDialogStage(dialogStage);
+
+      dialogStage.showAndWait();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  @FXML
   private void handleInputEpisodeNames() {
     try {
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(MainWindowController.class.getResource("../view/EpisodeNameInput.fxml"));
+      loader.setLocation(MainWindowController.class.getResource("EpisodeNameInput.fxml"));
       AnchorPane page = (AnchorPane) loader.load();
 
       Stage dialogStage = new Stage();

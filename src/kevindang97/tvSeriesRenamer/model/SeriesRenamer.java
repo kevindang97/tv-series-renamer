@@ -10,27 +10,26 @@ import javafx.collections.ObservableList;
 public class SeriesRenamer {
 
   private Path folder;
-  // private List<Path> files;
   private String format;
   private String seriesName;
   private int seasonNumber;
-  private int episodeNumDigits;
-  // private List<String> episodeName;
   private ObservableList<RenameAction> renameActions;
+
+  // Miscellaneous settings
+  private boolean episodeNumberingZeroStart;
+
+  // Implementation specific variables (Won't be exposed with getters/setters)
+  private int episodeNumDigits;
 
   public SeriesRenamer() {
     folder = null;
-    // files = new ArrayList<Path>();
     format = "[series-name] - s[season-num]e[episode-num] - [episode-name]";
     seriesName = "";
     seasonNumber = 0;
     episodeNumDigits = 2;
-    // episodeName = new ArrayList<String>();
     renameActions = FXCollections.observableArrayList();
-  }
 
-  public int getNumFiles() {
-    return renameActions.size();
+    episodeNumberingZeroStart = false;
   }
 
   public Path getFolder() {
@@ -41,8 +40,41 @@ public class SeriesRenamer {
     return format;
   }
 
+  public String getSeriesName() {
+    return seriesName;
+  }
+
+  public void setSeriesName(String seriesName) {
+    this.seriesName = seriesName;
+    regenerateAllAfterFilenames();
+  }
+
+  public int getSeasonNumber() {
+    return seasonNumber;
+  }
+
+  public void setSeasonNumber(int seasonNum) {
+    this.seasonNumber = seasonNum;
+    regenerateAllAfterFilenames();
+  }
+
+  public int getNumFiles() {
+    return renameActions.size();
+  }
+
   public ObservableList<RenameAction> getRenameActions() {
     return renameActions;
+  }
+
+  public boolean getEpisodeNumberingZeroStart() {
+    return episodeNumberingZeroStart;
+  }
+
+  public void setEpisodeNumberingZeroStart(boolean bool) {
+    if (episodeNumberingZeroStart != bool) {
+      episodeNumberingZeroStart = bool;
+      regenerateAllAfterFilenames();
+    }
   }
 
   private boolean regenerateAfterFilename(int index) {
@@ -60,12 +92,15 @@ public class SeriesRenamer {
       extension = "." + split[split.length - 1];
     }
 
+    // get episode number
+    int episodeNumber = episodeNumberingZeroStart ? index : index + 1;
+
     if (renameAction.getEpisodeName().equals("")) {
       renameAction.setAfterFilename(String.format("%s - s%02de%0" + episodeNumDigits + "d%s",
-          seriesName, seasonNumber, index + 1, extension));
+          seriesName, seasonNumber, episodeNumber, extension));
     } else {
       renameAction.setAfterFilename(String.format("%s - s%02de%0" + episodeNumDigits + "d - %s%s",
-          seriesName, seasonNumber, index + 1, renameAction.getEpisodeName(), extension));
+          seriesName, seasonNumber, episodeNumber, renameAction.getEpisodeName(), extension));
     }
 
     return true;
@@ -75,24 +110,6 @@ public class SeriesRenamer {
     for (int i = 0; i < getNumFiles(); i++) {
       regenerateAfterFilename(i);
     }
-  }
-
-  public String getSeriesName() {
-    return seriesName;
-  }
-
-  public int getSeasonNumber() {
-    return seasonNumber;
-  }
-
-  public void setSeriesName(String seriesName) {
-    this.seriesName = seriesName;
-    regenerateAllAfterFilenames();
-  }
-
-  public void setSeasonNumber(int seasonNum) {
-    this.seasonNumber = seasonNum;
-    regenerateAllAfterFilenames();
   }
 
   public void setEpisodeName(int index, String newEpisodeName) {
@@ -173,6 +190,7 @@ public class SeriesRenamer {
    * @param index2
    */
   public void moveBeforeFilenameInsert(int index1, int index2) {
+    // TODO Unused yet
     if (!indexInBounds(index1) || !indexInBounds(index2)) {
       System.err.println(
           "ERROR: moveFileInsert(), indexes " + index1 + " or " + index2 + " out of bounds");

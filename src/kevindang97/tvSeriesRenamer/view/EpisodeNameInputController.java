@@ -1,4 +1,4 @@
-package kevindang97.tvSeriesRenamer.controller;
+package kevindang97.tvSeriesRenamer.view;
 
 import java.util.Arrays;
 import java.util.List;
