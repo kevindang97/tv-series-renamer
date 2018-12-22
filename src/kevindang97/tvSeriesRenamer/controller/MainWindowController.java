@@ -1,4 +1,4 @@
-package kevindang97.tvSeriesRenamer.view;
+package kevindang97.tvSeriesRenamer.controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -175,7 +175,7 @@ public class MainWindowController {
   private void handleInputEpisodeNames() {
     try {
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(MainWindowController.class.getResource("EpisodeNameInput.fxml"));
+      loader.setLocation(MainWindowController.class.getResource("../view/EpisodeNameInput.fxml"));
       AnchorPane page = (AnchorPane) loader.load();
 
       Stage dialogStage = new Stage();
