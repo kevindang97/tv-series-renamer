@@ -33,6 +33,10 @@ public class SeriesRenamer {
     return renameActions.size();
   }
 
+  public Path getFolder() {
+    return folder;
+  }
+
   public String getFormatString() {
     return format;
   }

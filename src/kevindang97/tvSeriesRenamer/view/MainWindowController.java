@@ -2,6 +2,7 @@ package kevindang97.tvSeriesRenamer.view;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -158,6 +159,12 @@ public class MainWindowController {
 
   @FXML
   private void handleOpenFolder() {
+    // open directory chooser in previous folder selected if it exists
+    Path previousDirectory = mainApp.getSeriesRenamer().getFolder();
+    if (previousDirectory != null) {
+      directoryChooser.setInitialDirectory(previousDirectory.toFile());
+    }
+
     File directory = directoryChooser.showDialog(mainApp.getPrimaryStage());
     if (directory != null) {
       mainApp.getSeriesRenamer().openFolder(directory.toPath());
