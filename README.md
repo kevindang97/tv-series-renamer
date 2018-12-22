@@ -1,21 +1,17 @@
 # TV Series Renamer
-A small Java application that will rename a set of files in a TV series into a standardised format
+A small Java application made for the purpose of renaming multiple files for a TV series or similar format into a standard filename format.
 
-The following is just my ramblings and my thoughts on this project. I'll keep them here because this project is only in its infancy so why not. Also I doubt anyone's ever gonna read this anyway aha...
+## Current Features
+- Currently only support for a single format: [series-name] - s[season-number]e[episode-number] - [episode-name] (example: Steven Universe - s01e03 - Cheeseburger Backpack)
+- Preview the before and after filenames
+- Input episode names en masse
+- Edit individual episode names
+- Reorder the input files in case some episodes are out of order
 
-## Current planned features
-- Rename a series of files in a single folder into a standardised format
-- Cool looking GUI that will be user friendly and allow the user to intuitively use the application
-- User will enter the series name and the season number
-  - The program may also have the option to autofill these fields by looking at the parent directory names
-- The program will then display the current list of file names adjacent to the new file names they will be changed to
-- The user must be able to swap which files are renamed to which new file name, in the case of unordered files
-  - This will be done through the GUI by dragging and dropping different file output names to match against their input file names
-- The option will exist for double episodes to be labelled, so these can be correctly renamed
-  - Do I need an option for triple episodes? Do those even exist?? Probably not so I'll leave it at double episodes only
+## Todos
+- Support for custom formats
+- Add some CSS to make it look more pretty and less like your generic Java application
+- Maybe using the parent folder names to perform some automatic detection of series name and season number
 
-## Stretch goals
-- Have a custom format option
-
-## Potential problems
-- Going to have to see if there's a way my program can reserve these files so other programs of the user can't touch them in the midst of renaming to ensure it all works correctly
+## Current Issues
+- Does not work properly when the before and after filenames overlap each other (This issue comes up when this tool is used to only reorder episodes and not rename them. A temporary workaround is to change something like the season number in order to perform the reorder and then change it back to the original season number afterwards.)
