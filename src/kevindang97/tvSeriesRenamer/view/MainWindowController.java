@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,7 +24,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -45,8 +49,12 @@ public class MainWindowController {
   @FXML
   private TableColumn<RenameAction, String> afterFilenameColumn;
 
+  @FXML
+  private Button moveModeButton;
+
   private MainApp mainApp;
   private final DirectoryChooser directoryChooser = new DirectoryChooser();
+  private boolean moveModeSwap = true;
 
   @FXML
   private void initialize() {
@@ -84,14 +92,16 @@ public class MainWindowController {
 
       cell.setOnDragEntered(event -> {
         if (event.getGestureSource() != cell && event.getDragboard().hasString()) {
-          cell.setOpacity(0.5);
+          // cell.setOpacity(0.5);
+          cell.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, null, null)));
         }
 
         event.consume();
       });
 
       cell.setOnDragExited(event -> {
-        cell.setOpacity(1);
+        // cell.setOpacity(1);
+        cell.setBackground(null);
 
         event.consume();
       });
@@ -102,7 +112,11 @@ public class MainWindowController {
         int index2 = cell.getTableRow().getIndex();
         // System.out.println("Moving cells from rows " + index1 + " & " + index2);
 
-        mainApp.getSeriesRenamer().moveBeforeFilenameSwap(index1, index2);
+        if (moveModeSwap) {
+          mainApp.getSeriesRenamer().moveBeforeFilenameSwap(index1, index2);
+        } else {
+          mainApp.getSeriesRenamer().moveBeforeFilenameInsert(index1, index2);
+        }
 
         event.consume();
       });
@@ -197,6 +211,17 @@ public class MainWindowController {
       dialogStage.showAndWait();
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  @FXML
+  private void handleMoveMode() {
+    moveModeSwap = !moveModeSwap;
+
+    if (moveModeSwap) {
+      moveModeButton.setText("Move Mode: Swap");
+    } else {
+      moveModeButton.setText("Move Mode: Insert");
     }
   }
 

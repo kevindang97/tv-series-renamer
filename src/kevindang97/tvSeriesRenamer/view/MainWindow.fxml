@@ -49,6 +49,7 @@
                   <TextField fx:id="seasonNumberTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <buttons>
+                        <Button fx:id="moveModeButton" mnemonicParsing="false" onAction="#handleMoveMode" text="Move Mode: Swap" />
                       <Button mnemonicParsing="false" onAction="#handleInputEpisodeNames" text="Input Episode Names" />
                         <Button mnemonicParsing="false" onAction="#handlePerformRename" text="Perform Rename" />
                     </buttons>
