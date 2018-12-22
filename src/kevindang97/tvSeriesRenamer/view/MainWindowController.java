@@ -181,7 +181,7 @@ public class MainWindowController {
     // open directory chooser in previous folder selected if it exists
     Path previousDirectory = mainApp.getSeriesRenamer().getFolder();
     if (previousDirectory != null) {
-      directoryChooser.setInitialDirectory(previousDirectory.toFile());
+      directoryChooser.setInitialDirectory(previousDirectory.getParent().toFile());
     }
 
     File directory = directoryChooser.showDialog(mainApp.getPrimaryStage());
