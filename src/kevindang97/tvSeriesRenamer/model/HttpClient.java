@@ -20,31 +20,14 @@ import org.json.simple.parser.JSONParser;
  */
 public final class HttpClient {
 
-  private static final String rootUrl = "https://api.thetvdb.com";
-  private static final JSONParser jsonParser = new JSONParser();
+  private final String rootUrl = "https://api.thetvdb.com";
+  private final JSONParser jsonParser = new JSONParser();
+  private final SeriesRenamer seriesRenamer;
 
-  private static String username = "";
-  private static String uniqueId = "";
-  private static String apiKey = "";
-  private static String token = "";
+  private String token = "";
 
-  /**
-   * Private constructor as this class doesn't need to be instantiated as all methods are static.
-   */
-  private HttpClient() {}
-
-  /**
-   * Set TVDB login credentials. In order to find this info, go to
-   * https://www.thetvdb.com/member/api after logging in.
-   * 
-   * @param username
-   * @param uniqueId
-   * @param apiKey
-   */
-  public static void setCredentials(String username, String uniqueId, String apiKey) {
-    HttpClient.username = username;
-    HttpClient.uniqueId = uniqueId;
-    HttpClient.apiKey = apiKey;
+  public HttpClient(SeriesRenamer seriesRenamer) {
+    this.seriesRenamer = seriesRenamer;
   }
 
   /**
@@ -56,13 +39,13 @@ public final class HttpClient {
    * @return
    * @throws Exception
    */
-  public static List<String> getEpisodeNames(String seriesName, int seasonNumber) throws Exception {
+  public List<String> getEpisodeNames(String seriesName, int seasonNumber) throws Exception {
     JSONObject seriesInfo = getSeriesInfo(seriesName);
     long seriesId = (long) seriesInfo.get("id");
     return getEpisodeNames(seriesId, seasonNumber);
   }
 
-  private static List<String> getEpisodeNames(long seriesId, int seasonNumber) throws Exception {
+  private List<String> getEpisodeNames(long seriesId, int seasonNumber) throws Exception {
 
     /**
      * Method local class used to sort episode names by airing date
@@ -114,7 +97,7 @@ public final class HttpClient {
     return episodeNameList;
   }
 
-  private static JSONObject getSeriesInfo(String seriesName) throws Exception {
+  private JSONObject getSeriesInfo(String seriesName) throws Exception {
     String url = rootUrl + "/search/series?name=" + URLEncoder.encode(seriesName, "UTF-8");
 
     // Return the first result from the search
@@ -130,8 +113,9 @@ public final class HttpClient {
    * 
    * @throws Exception
    */
-  private static void authenticate() throws Exception {
-    if (username.equals("") || uniqueId.equals("") || apiKey.equals("")) {
+  private void authenticate() throws Exception {
+    if (seriesRenamer.getTvdbUsername().equals("") || seriesRenamer.getTvdbUniqueId().equals("")
+        || seriesRenamer.getTvdbApiKey().equals("")) {
       throw new Exception("TVDB credentials have not been set");
     }
 
@@ -142,9 +126,9 @@ public final class HttpClient {
     con.setRequestProperty("Accept", "application/json");
 
     JSONObject jsonBody = new JSONObject();
-    jsonBody.put("apikey", apiKey);
-    jsonBody.put("userkey", uniqueId);
-    jsonBody.put("username", username);
+    jsonBody.put("username", seriesRenamer.getTvdbUsername());
+    jsonBody.put("userkey", seriesRenamer.getTvdbUniqueId());
+    jsonBody.put("apikey", seriesRenamer.getTvdbApiKey());
 
     String body = jsonBody.toJSONString();
 
@@ -168,7 +152,7 @@ public final class HttpClient {
     token = (String) jsonResponse.get("token");
   }
 
-  private static JSONObject sendGet(String url) throws Exception {
+  private JSONObject sendGet(String url) throws Exception {
     if (token.equals("")) {
       authenticate();
     }

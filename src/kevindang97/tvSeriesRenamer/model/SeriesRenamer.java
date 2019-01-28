@@ -5,6 +5,8 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.List;
+import java.util.prefs.Preferences;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,9 +17,8 @@ public class SeriesRenamer {
   private String seriesName;
   private int seasonNumber;
   private ObservableList<RenameAction> renameActions;
-
-  // Miscellaneous settings
-  private boolean episodeNumberingZeroStart;
+  private HttpClient httpClient;
+  private Preferences prefs;
 
   // Implementation specific variables (Won't be exposed with getters/setters)
   private int episodeNumDigits;
@@ -29,8 +30,8 @@ public class SeriesRenamer {
     seasonNumber = 0;
     episodeNumDigits = 2;
     renameActions = FXCollections.observableArrayList();
-
-    episodeNumberingZeroStart = false;
+    httpClient = new HttpClient(this);
+    prefs = Preferences.userNodeForPackage(SeriesRenamer.class);
   }
 
   public Path getFolder() {
@@ -68,12 +69,12 @@ public class SeriesRenamer {
   }
 
   public boolean getEpisodeNumberingZeroStart() {
-    return episodeNumberingZeroStart;
+    return prefs.getBoolean("episodeNumberingZeroStart", false);
   }
 
   public void setEpisodeNumberingZeroStart(boolean bool) {
-    if (episodeNumberingZeroStart != bool) {
-      episodeNumberingZeroStart = bool;
+    if (getEpisodeNumberingZeroStart() != bool) {
+      prefs.putBoolean("episodeNumberingZeroStart", bool);
       regenerateAllAfterFilenames();
     }
   }
@@ -94,7 +95,7 @@ public class SeriesRenamer {
     }
 
     // get episode number
-    int episodeNumber = episodeNumberingZeroStart ? index : index + 1;
+    int episodeNumber = getEpisodeNumberingZeroStart() ? index : index + 1;
 
     if (renameAction.getEpisodeName().equals("")) {
       renameAction.setAfterFilename(String.format("%s - s%02de%0" + episodeNumDigits + "d%s",
@@ -270,7 +271,43 @@ public class SeriesRenamer {
     return numDigits;
   }
 
+  public List<String> getEpisodeNames(String seriesName, int seasonNumber) {
+    List<String> episodeNames = null;
+
+    try {
+      episodeNames = httpClient.getEpisodeNames(seriesName, seasonNumber);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return episodeNames;
+  }
+
   private boolean indexInBounds(int index) {
     return index >= 0 && index < getNumFiles();
+  }
+
+  public String getTvdbUsername() {
+    return prefs.get("tvdbUsername", "");
+  }
+
+  public void setTvdbUsername(String username) {
+    prefs.put("tvdbUsername", username);
+  }
+
+  public String getTvdbUniqueId() {
+    return prefs.get("tvdbUniqueId", "");
+  }
+
+  public void setTvdbUniqueId(String uniqueId) {
+    prefs.put("tvdbUniqueId", uniqueId);
+  }
+
+  public String getTvdbApiKey() {
+    return prefs.get("tvdbApiKey", "");
+  }
+
+  public void setTvdbApiKey(String apiKey) {
+    prefs.put("tvdbApiKey", apiKey);
   }
 }
