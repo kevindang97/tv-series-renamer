@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.prefs.Preferences;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import kevindang97.tvSeriesRenamer.util.Util;
 
 public class SeriesRenamer {
 
@@ -271,7 +272,18 @@ public class SeriesRenamer {
     return numDigits;
   }
 
-  public List<String> getEpisodeNames(String seriesName, int seasonNumber) {
+  /**
+   * Uses HttpClient to automatically retrieve and set the episode names for the current seriesName
+   * and seasonNumber using the TVDB database. It will also strip any illegal filename characters
+   * from the episode names it retrieves.
+   */
+  public void autoFillEpisodeNames() {
+    if (getSeriesName().equals("") || getSeasonNumber() == 0) {
+      return;
+    }
+
+    clearEpisodeNames();
+
     List<String> episodeNames = null;
 
     try {
@@ -280,7 +292,9 @@ public class SeriesRenamer {
       e.printStackTrace();
     }
 
-    return episodeNames;
+    for (int i = 0; i < getNumFiles(); i++) {
+      setEpisodeName(i, Util.stripIllegalFilenameChars(episodeNames.get(i)));
+    }
   }
 
   private boolean indexInBounds(int index) {

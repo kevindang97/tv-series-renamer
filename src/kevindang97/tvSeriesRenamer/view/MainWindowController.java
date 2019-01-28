@@ -226,10 +226,15 @@ public class MainWindowController {
   }
 
   @FXML
-  private void handleInputEpisodeNames() {
+  private void handleAutofillEpisodeNames() {
+    mainApp.getSeriesRenamer().autoFillEpisodeNames();
+  }
+
+  @FXML
+  private void handleChangeEpisodeNames() {
     try {
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(MainWindowController.class.getResource("EpisodeNameInput.fxml"));
+      loader.setLocation(MainWindowController.class.getResource("EpisodeNameChange.fxml"));
       AnchorPane page = (AnchorPane) loader.load();
 
       Stage dialogStage = new Stage();
@@ -239,12 +244,14 @@ public class MainWindowController {
       Scene scene = new Scene(page);
       dialogStage.setScene(scene);
 
-      EpisodeNameInputController controller = loader.getController();
+      EpisodeNameChangeController controller = loader.getController();
+      controller.setSeriesRenamer(mainApp.getSeriesRenamer());
       controller.setDialogStage(dialogStage);
 
       dialogStage.showAndWait();
 
       if (controller.isOkClicked()) {
+        mainApp.getSeriesRenamer().clearEpisodeNames();
         List<String> episodeNames = controller.getEpisodeNames();
 
         for (int i = 0; i < Math.min(mainApp.getSeriesRenamer().getNumFiles(),

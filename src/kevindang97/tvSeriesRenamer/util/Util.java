@@ -4,7 +4,7 @@ import javafx.scene.control.TextFormatter;
 
 public class Util {
 
-  private static String illegalFilenameChars = "/\\?%*:|\"<>.";
+  private static final String illegalFilenameChars = "/\\?%*:|\"<>.";
 
   public static TextFormatter<String> getRestricterIllegalFilenameChars() {
     return new TextFormatter<String>(change -> {
@@ -17,6 +17,11 @@ public class Util {
 
       return change;
     });
+  }
+
+  public static String stripIllegalFilenameChars(String string) {
+    String illegalCharPattern = "[\\Q" + illegalFilenameChars + "\\E]";
+    return string.replaceAll(illegalCharPattern, "");
   }
 
 }
