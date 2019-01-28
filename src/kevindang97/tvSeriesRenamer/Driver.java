@@ -1,25 +1,29 @@
 package kevindang97.tvSeriesRenamer;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import kevindang97.tvSeriesRenamer.model.RenameAction;
-import kevindang97.tvSeriesRenamer.model.SeriesRenamer;
+import java.util.List;
+import kevindang97.tvSeriesRenamer.model.HttpClient;
 
 public class Driver {
 
-  public static void main(String[] args) {
-    Path p = Paths.get("D:\\Documents\\test");
+  public static void main(String[] args) throws Exception {
+    // Path p = Paths.get("D:\\Documents\\test");
+    //
+    // SeriesRenamer sr = new SeriesRenamer();
+    // sr.setSeriesName("Series");
+    // sr.setSeasonNumber(3);
+    // sr.openFolder(p);
+    //
+    // for (RenameAction renameAction : sr.getRenameActions()) {
+    // System.out.format("File: %s, target: %s%n", renameAction.getBeforeFilename(),
+    // renameAction.getAfterFilename());
+    // }
+    //
+    // sr.performRename();
 
-    SeriesRenamer sr = new SeriesRenamer();
-    sr.setSeriesName("Series");
-    sr.setSeasonNumber(3);
-    sr.openFolder(p);
+    List<String> episodeNames = HttpClient.getEpisodeNames("Modern Family", 9);
 
-    for (RenameAction renameAction : sr.getRenameActions()) {
-      System.out.format("File: %s, target: %s%n", renameAction.getBeforeFilename(),
-          renameAction.getAfterFilename());
+    for (String s : episodeNames) {
+      System.out.println(s);
     }
-
-    sr.performRename();
   }
 }
