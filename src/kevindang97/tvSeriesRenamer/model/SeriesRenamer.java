@@ -140,7 +140,9 @@ public class SeriesRenamer {
     this.folder = folder;
     try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
       for (Path path : stream) {
-        renameActions.add(new RenameAction(path.getFileName().toString()));
+        if (path.toFile().isFile()) {
+          renameActions.add(new RenameAction(path.getFileName().toString()));
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();
