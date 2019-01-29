@@ -187,6 +187,11 @@ public class MainWindowController {
     File directory = directoryChooser.showDialog(mainApp.getPrimaryStage());
     if (directory != null) {
       mainApp.getSeriesRenamer().openFolder(directory.toPath());
+      if (mainApp.getSeriesRenamer().getAutoSetSeriesInfo()) {
+        seriesNameTextField.setText(mainApp.getSeriesRenamer().getSeriesName());
+        seasonNumberTextField
+            .setText(Integer.toString(mainApp.getSeriesRenamer().getSeasonNumber()));
+      }
     }
   }
 

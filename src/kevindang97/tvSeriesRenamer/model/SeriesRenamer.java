@@ -138,6 +138,21 @@ public class SeriesRenamer {
     // clear existing files and episodeName lists
     renameActions.clear();
 
+    // automatically set series name and season number based off of folder path
+    if (getAutoSetSeriesInfo()) {
+      String folderName = folder.getFileName().toString();
+      String parentName = folder.getParent().getFileName().toString();
+
+      // the assumption is that the folder structure is like so: SeriesName/Season#/EpisodesHere
+      // strip all non number characters from season folder so that the number can be parsed
+      String strippedFolderName = folderName.replaceAll("\\D", "");
+      if (!strippedFolderName.equals("")) {
+        int folderNum = Integer.parseInt(strippedFolderName);
+        setSeasonNumber(folderNum);
+      }
+      setSeriesName(parentName);
+    }
+
     // opens the folder directory and stores files in private list
     this.folder = folder;
     try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
@@ -299,6 +314,14 @@ public class SeriesRenamer {
 
   private boolean indexInBounds(int index) {
     return index >= 0 && index < getNumFiles();
+  }
+
+  public boolean getAutoSetSeriesInfo() {
+    return prefs.getBoolean("autoSetSeriesInfo", true);
+  }
+
+  public void setAutoSetSeriesInfo(boolean bool) {
+    prefs.putBoolean("autoSetSeriesInfo", bool);
   }
 
   public String getTvdbUsername() {

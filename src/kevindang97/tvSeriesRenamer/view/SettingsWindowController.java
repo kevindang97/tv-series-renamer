@@ -11,6 +11,8 @@ public class SettingsWindowController {
   @FXML
   private CheckBox episodeNumberingZeroStartCheckBox;
   @FXML
+  private CheckBox autoSetSeriesInfoCheckBox;
+  @FXML
   private TextField tvdbUsernameTextField;
   @FXML
   private TextField tvdbUniqueIdTextField;
@@ -32,6 +34,7 @@ public class SettingsWindowController {
 
   private void updateSettings() {
     episodeNumberingZeroStartCheckBox.setSelected(seriesRenamer.getEpisodeNumberingZeroStart());
+    autoSetSeriesInfoCheckBox.setSelected(seriesRenamer.getAutoSetSeriesInfo());
     tvdbUsernameTextField.setText(seriesRenamer.getTvdbUsername());
     tvdbUniqueIdTextField.setText(seriesRenamer.getTvdbUniqueId());
     tvdbApiKeyTextField.setText(seriesRenamer.getTvdbApiKey());
@@ -40,6 +43,7 @@ public class SettingsWindowController {
   @FXML
   private void handleApply() {
     seriesRenamer.setEpisodeNumberingZeroStart(episodeNumberingZeroStartCheckBox.isSelected());
+    seriesRenamer.setAutoSetSeriesInfo(autoSetSeriesInfoCheckBox.isSelected());
     seriesRenamer.setTvdbUsername(tvdbUsernameTextField.getText());
     seriesRenamer.setTvdbUniqueId(tvdbUniqueIdTextField.getText());
     seriesRenamer.setTvdbApiKey(tvdbApiKeyTextField.getText());

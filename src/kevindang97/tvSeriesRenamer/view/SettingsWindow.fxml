@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kevindang97.tvSeriesRenamer.view.SettingsWindowController">
-   <center>
+   <left>
       <GridPane prefWidth="300.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
@@ -23,6 +23,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -31,7 +32,7 @@
         </rowConstraints>
          <children>
             <CheckBox fx:id="episodeNumberingZeroStartCheckBox" mnemonicParsing="false" text="Episode Numbering Start at 0?" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
-            <ButtonBar GridPane.rowIndex="7">
+            <ButtonBar GridPane.rowIndex="8">
               <buttons>
                 <Button mnemonicParsing="false" onAction="#handleApply" text="Apply" />
                   <Button mnemonicParsing="false" onAction="#handleClose" text="Cancel" />
@@ -42,9 +43,9 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label text="TVDB Credentials" GridPane.rowIndex="4">
+            <Label text="TVDB Credentials" GridPane.rowIndex="5">
                <font>
-                  <Font size="24.0" />
+                  <Font size="20.0" />
                </font>
                <opaqueInsets>
                   <Insets />
@@ -53,7 +54,7 @@
                   <Insets />
                </GridPane.margin>
             </Label>
-            <GridPane GridPane.rowIndex="5">
+            <GridPane GridPane.rowIndex="6">
               <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="70.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -73,12 +74,13 @@
                </children>
             </GridPane>
             <Separator prefWidth="200.0" GridPane.rowIndex="1" />
-            <Separator prefWidth="200.0" GridPane.rowIndex="3" />
-            <Separator prefWidth="200.0" GridPane.rowIndex="6" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="4" />
+            <Separator prefWidth="200.0" GridPane.rowIndex="7" />
+            <CheckBox fx:id="autoSetSeriesInfoCheckBox" mnemonicParsing="false" text="Automatically set series name and&#10;season number based off folder path" textAlignment="CENTER" wrapText="true" GridPane.rowIndex="3" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
       </GridPane>
-   </center>
+   </left>
 </BorderPane>
