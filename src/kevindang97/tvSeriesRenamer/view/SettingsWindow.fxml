@@ -31,7 +31,6 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <CheckBox fx:id="episodeNumberingZeroStartCheckBox" mnemonicParsing="false" text="Episode Numbering Start at 0?" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
             <ButtonBar GridPane.rowIndex="8">
               <buttons>
                 <Button mnemonicParsing="false" onAction="#handleApply" text="Apply" />
@@ -43,6 +42,19 @@
                   <Font size="24.0" />
                </font>
             </Label>
+            <GridPane GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="191.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="145.0" minWidth="10.0" prefWidth="109.0" />
+              </columnConstraints>
+             <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                 <Label text="Custom episode numbering start:" />
+                 <TextField fx:id="episodeNumberingStartTextField" GridPane.columnIndex="1" />
+              </children>
+            </GridPane>
             <Label text="TVDB Credentials" GridPane.rowIndex="5">
                <font>
                   <Font size="20.0" />

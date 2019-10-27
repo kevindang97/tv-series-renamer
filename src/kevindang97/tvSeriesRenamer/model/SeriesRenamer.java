@@ -20,6 +20,7 @@ public class SeriesRenamer {
   private String format;
   private String seriesName;
   private int seasonNumber;
+  private int episodeNumberingStart;
   private Comparator<RenameAction> filenameSorter;
   private ObservableList<RenameAction> renameActions;
   private HttpClient httpClient;
@@ -33,9 +34,10 @@ public class SeriesRenamer {
     format = "[series-name] - s[season-num]e[episode-num] - [episode-name]";
     seriesName = "";
     seasonNumber = 0;
+    episodeNumberingStart = 1;
     episodeNumDigits = 2;
-    filenameSorter = new WindowsExplorerRenameActionComparator(
-        new WindowsExplorerStringComparator());
+    filenameSorter =
+        new WindowsExplorerRenameActionComparator(new WindowsExplorerStringComparator());
     renameActions = FXCollections.observableArrayList();
     httpClient = new HttpClient(this);
     prefs = Preferences.userNodeForPackage(SeriesRenamer.class);
@@ -75,13 +77,13 @@ public class SeriesRenamer {
     return renameActions;
   }
 
-  public boolean getEpisodeNumberingZeroStart() {
-    return prefs.getBoolean("episodeNumberingZeroStart", false);
+  public int getEpisodeNumberingStart() {
+    return episodeNumberingStart;
   }
 
-  public void setEpisodeNumberingZeroStart(boolean bool) {
-    if (getEpisodeNumberingZeroStart() != bool) {
-      prefs.putBoolean("episodeNumberingZeroStart", bool);
+  public void setEpisodeNumberingStart(int start) {
+    if (episodeNumberingStart != start) {
+      episodeNumberingStart = start;
       regenerateAllAfterFilenames();
     }
   }
@@ -102,7 +104,7 @@ public class SeriesRenamer {
     }
 
     // get episode number
-    int episodeNumber = getEpisodeNumberingZeroStart() ? index : index + 1;
+    int episodeNumber = getEpisodeNumberingStart() + index;
 
     if (renameAction.getEpisodeName().equals("")) {
       renameAction.setAfterFilename(String.format("%s - s%02de%0" + episodeNumDigits + "d%s",

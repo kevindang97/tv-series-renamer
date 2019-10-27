@@ -1,15 +1,17 @@
 package kevindang97.tvSeriesRenamer.view;
 
+import java.util.regex.Pattern;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.stage.Stage;
 import kevindang97.tvSeriesRenamer.model.SeriesRenamer;
 
 public class SettingsWindowController {
 
   @FXML
-  private CheckBox episodeNumberingZeroStartCheckBox;
+  private TextField episodeNumberingStartTextField;
   @FXML
   private CheckBox autoSetSeriesInfoCheckBox;
   @FXML
@@ -22,6 +24,18 @@ public class SettingsWindowController {
   private Stage dialogStage;
   private SeriesRenamer seriesRenamer;
 
+  @FXML
+  private void initialize() {
+    // set up text formatter for season number text field to restrict input to only digit characters
+    episodeNumberingStartTextField.setTextFormatter(new TextFormatter<>(change -> {
+      if (Pattern.matches("\\d*", change.getText())) {
+        return change;
+      } else {
+        return null;
+      }
+    }));
+  }
+
   public void setDialogStage(Stage stage) {
     dialogStage = stage;
   }
@@ -33,7 +47,8 @@ public class SettingsWindowController {
   }
 
   private void updateSettings() {
-    episodeNumberingZeroStartCheckBox.setSelected(seriesRenamer.getEpisodeNumberingZeroStart());
+    String episodeNumberingStart = Integer.toString(seriesRenamer.getEpisodeNumberingStart());
+    episodeNumberingStartTextField.setText(episodeNumberingStart);
     autoSetSeriesInfoCheckBox.setSelected(seriesRenamer.getAutoSetSeriesInfo());
     tvdbUsernameTextField.setText(seriesRenamer.getTvdbUsername());
     tvdbUniqueIdTextField.setText(seriesRenamer.getTvdbUniqueId());
@@ -42,7 +57,8 @@ public class SettingsWindowController {
 
   @FXML
   private void handleApply() {
-    seriesRenamer.setEpisodeNumberingZeroStart(episodeNumberingZeroStartCheckBox.isSelected());
+    int episodeNumberingStart = Integer.parseInt(episodeNumberingStartTextField.getText());
+    seriesRenamer.setEpisodeNumberingStart(episodeNumberingStart);
     seriesRenamer.setAutoSetSeriesInfo(autoSetSeriesInfoCheckBox.isSelected());
     seriesRenamer.setTvdbUsername(tvdbUsernameTextField.getText());
     seriesRenamer.setTvdbUniqueId(tvdbUniqueIdTextField.getText());
