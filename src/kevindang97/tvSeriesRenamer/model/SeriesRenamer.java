@@ -5,11 +5,14 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.prefs.Preferences;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import kevindang97.tvSeriesRenamer.util.Util;
+import kevindang97.tvSeriesRenamer.util.WindowsExplorerRenameActionComparator;
+import kevindang97.tvSeriesRenamer.util.WindowsExplorerStringComparator;
 
 public class SeriesRenamer {
 
@@ -17,6 +20,7 @@ public class SeriesRenamer {
   private String format;
   private String seriesName;
   private int seasonNumber;
+  private Comparator<RenameAction> filenameSorter;
   private ObservableList<RenameAction> renameActions;
   private HttpClient httpClient;
   private Preferences prefs;
@@ -30,6 +34,8 @@ public class SeriesRenamer {
     seriesName = "";
     seasonNumber = 0;
     episodeNumDigits = 2;
+    filenameSorter = new WindowsExplorerRenameActionComparator(
+        new WindowsExplorerStringComparator());
     renameActions = FXCollections.observableArrayList();
     httpClient = new HttpClient(this);
     prefs = Preferences.userNodeForPackage(SeriesRenamer.class);
@@ -130,9 +136,6 @@ public class SeriesRenamer {
 
   /**
    * Reads all the files in the specified folder
-   * 
-   * @param folder
-   * @return
    */
   public boolean openFolder(Path folder) {
     // clear existing files and episodeName lists
@@ -175,7 +178,7 @@ public class SeriesRenamer {
     // sort the renameActions before we generate the after filenames
     // this is because there's no guarantee that the directory stream reads the files in sorted
     // order
-    Collections.sort(renameActions);
+    Collections.sort(renameActions, filenameSorter);
 
     regenerateAllAfterFilenames();
 
@@ -184,9 +187,6 @@ public class SeriesRenamer {
 
   /**
    * Swaps the beforeFilename properties of the two RenameActions
-   * 
-   * @param index1
-   * @param index2
    */
   public void moveBeforeFilenameSwap(int index1, int index2) {
     if (!indexInBounds(index1) || !indexInBounds(index2)) {
@@ -208,9 +208,6 @@ public class SeriesRenamer {
   /**
    * Moves the beforeFilename properties of the two RenameActions by inserting index1 directly
    * above/below index2. This is the same as the process used in insertion sort.
-   * 
-   * @param index1
-   * @param index2
    */
   public void moveBeforeFilenameInsert(int index1, int index2) {
     // TODO Unused yet
@@ -236,8 +233,6 @@ public class SeriesRenamer {
   /**
    * Checks that the various fields have valid values, returning an error message for each invalid
    * field. An empty return string means there are no invalid fields.
-   * 
-   * @return
    */
   public String performValidation() {
     String errorMessage = "";
@@ -257,8 +252,6 @@ public class SeriesRenamer {
 
   /**
    * Performs the full renaming operation on all the files in the renameActions list
-   * 
-   * @return
    */
   public void performRename() {
     // TODO Can't handle case where original and target filenames overlap
